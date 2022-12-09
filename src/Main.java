@@ -1,44 +1,45 @@
 import java.lang.*;
+import java.lang.reflect.Array;
 import java.util.*;
 public class Main {
     public static void main(String[] args) {
-/*        //Exercice 1
-        int targetNumber = 100;
-        int startNumber = 0;
-        boolean targetReached = false;
+        //Exercice 1
+//        int targetNumber = 100;
+//        int startNumber = 0;
+//        boolean targetReached = false;
+//
+//        enumerateWhile(targetReached, startNumber, targetNumber);
+//        enumerateFor();
+//        enumerateEven();
+//        //Exercice 2.1
+//        int number = 30;
+//        int smallerSuperiorSquare = getSmallerSquaredNum(number);
+//        System.out.println("The smaller superior square of "+ number + " is: " + smallerSuperiorSquare);
+//        //Exercice 2.2
+//        int biggestInferiorSquare = getBiggestInferiorNum(number);
+//        System.out.println("The biggest inferior square of "+ number + " is: " + biggestInferiorSquare);
 
-        enumerateWhile(targetReached, startNumber, targetNumber);
-        enumerateFor();
-        enumerateEven();
-        //Exercice 2.1
-        int number = 30;
-        int smallerSuperiorSquare = getSmallerSquaredNum(number);
-        System.out.println("The smaller superior square of "+ number + " is: " + smallerSuperiorSquare);
-        //Exercice 2.2
-        int biggestInferiorSquare = getBiggestInferiorNum(number);
-        System.out.println("The biggest inferior square of "+ number + " is: " + biggestInferiorSquare);*/
-
-/*        //Exercice 3
+        //Exercice 3
         //Exercice 3.1
-        ArrayList test = fibo(5);
-        System.out.println(test);
+        //ArrayList test = fibo(5);
+        //System.out.println(test);
         //Exercice 3.2
-        double epsilon = 0.01;
-        int[] aproxFibo = approximationFibo(epsilon);
-        System.out.println(Arrays.toString(aproxFibo));*/
+        double epsilon = 0.00001;
+        int[] aproxFibo = approximationFiboRevision(epsilon);
+        System.out.println(Arrays.toString(aproxFibo));
 
-/*        //Exercice 4
-        //Exercice 4.1
-        printNames();
-        //Exercice 4.2
-        printNamesForEachLoop();
-        //Exercice 4.3
-        describe();
-        //Exercice 4.4
-        toUpperCase(); */
-
-        /* Exercice 5 */
-        decryptWeirdMessage();
+//        //Exercice 4
+//        //Exercice 4.1
+//        printNames();
+//        //Exercice 4.2
+//        printNamesForEachLoop();
+//        //Exercice 4.3
+//        describe();
+//        //Exercice 4.4
+//        toUpperCase(); */
+//
+//        /* Exercice 5 */
+//        decryptWeirdMessage();
 
 
 
@@ -91,6 +92,35 @@ public class Main {
         }
         return 0;
     }
+
+    public static int getSmallerSquaredNum_fixed(int n){
+        boolean squareFound = false;
+        while (!squareFound){
+            double squareValOfn = Math.sqrt(n);
+            if(Math.floor(squareValOfn) == squareValOfn){
+                squareFound = true;
+            } else {
+                n++;
+            }
+        }
+        return n;
+    }
+
+    public static int getSmallerSquaredNum_demo(int n){
+        boolean squareFound;
+        do {
+            double squareValOfn = Math.sqrt(n);
+            if(Math.floor(squareValOfn) == squareValOfn){
+                squareFound = true;
+            } else {
+                squareFound = false;
+                n++;
+            }
+        } while (!squareFound);
+        return 0;
+    }
+
+
     public static int getBiggestInferiorNum(int n){
         boolean squareFound = false;
         while (!squareFound){
@@ -119,6 +149,18 @@ public class Main {
         }
         return (fibonacciList);
     }
+
+    public static ArrayList<Integer> fibo_demo(int listLength){
+        ArrayList<Integer> fibonacciList = new ArrayList<>();
+        fibonacciList.add(0);
+        fibonacciList.add(1);
+        for (int i = 1; i <= listLength; i++){
+            int num = fibonacciList.get(i - 1) + fibonacciList.get(i);
+            fibonacciList.add( num );
+        }
+        return fibonacciList;
+    }
+
     public static int[] approximationFibo(double epsilon){
         ArrayList fibonacciSuite = fibo(10);
         int lengthFibo = fibonacciSuite.size();
@@ -137,6 +179,32 @@ public class Main {
         return new int[0];
     }
 
+    public static int[] approximationFiboRevision(double epsilon){
+        //Building fibonacci suite
+
+        ArrayList<Integer> fibonacciList = new ArrayList<>();
+        fibonacciList.add(0);
+        fibonacciList.add(1);
+        fibonacciList.add(1);
+
+        fibonacciList.addAll( Arrays.asList(0, 1, 1) );
+
+        double error = 1;
+        int a = 1;
+        int b = 1;
+
+        //Check if epsilon is reached and continue the fibonacci suite if not
+        while (error > epsilon){
+           a = fibonacciList.get( fibonacciList.size() - 1 );
+           b = fibonacciList.get( fibonacciList.size() - 2 );
+            error = Math.abs((float)b/(float)a - (1+Math.sqrt(5)) / 2);
+            if(error  > epsilon){
+                fibonacciList.add(a+b);
+            }
+        }
+        return new int[] {a, b};
+    }
+
     public static void printNames(){
         ArrayList<String> namesList = new ArrayList<String>();
         namesList.add("Jean");
@@ -145,8 +213,7 @@ public class Main {
         namesList.add("Blanca");
         for(int i = 0; i < namesList.size(); i++){
             String nameExtracted = namesList.get(i);
-            int nameLength = nameExtracted.length();
-            System.out.println(namesList.get(i) + ": " + nameLength);
+            System.out.println(namesList.get(i) + ": " +  nameExtracted.length());
         }
     }
 
@@ -157,8 +224,7 @@ public class Main {
         namesList.add("Lea");
         namesList.add("Blanca");
         for(String name : namesList){
-            int nameLength = name.length();
-            System.out.println(name + ": " + nameLength);
+            System.out.println(name + ": " + name.length());
         }
 
     }
@@ -174,7 +240,6 @@ public class Main {
             if (nameLength >= 4){
             System.out.println(name + ": " + nameLength);}
         }
-
     }
 
     public static void toUpperCase(){
